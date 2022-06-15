@@ -11,7 +11,7 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
 import sqlite3 as sq
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
-
+from config import token
 
 #            Память
 stor = MemoryStorage
@@ -19,7 +19,7 @@ stor = MemoryStorage
 
 #                Создание бота и диспетчера
 
-bot = Bot(token="2022024269:AAGyOv4TyRiDLrxTe-Bjko06x1pLkJ_xV1s")
+bot = Bot(token)
 dp = Dispatcher(bot, storage=stor())
 
 #                    Машина состояний
