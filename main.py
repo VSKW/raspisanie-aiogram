@@ -1,73 +1,40 @@
+# import
 import types
-
+import os
+import sqlite3 as sq
+# import библиотеки телеграма
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
-import os
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.dispatcher.filters import Text
-import sqlite3 as sq
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+# import по файлам
 from config import token
+from keyboards import kb, kb_day, kb_canc, kb_hw
 
-#            Память
+
+#Память
 stor = MemoryStorage
 
 
-#                Создание бота и диспетчера
-
+#Создание бота и диспетчера
 bot = Bot(token)
 dp = Dispatcher(bot, storage=stor())
 
-#                    Машина состояний
+
+#Машина состояний
 class FSMAdmin(StatesGroup):
     sub = State()
     day = State()
     text = State()
     photo = State()
 
-#                 Создание кнопопок и клавиатуры
 
-# Начало
-b1 = KeyboardButton('Расписание')
-b2 = KeyboardButton('Домашка')
-kb = ReplyKeyboardMarkup(resize_keyboard=True)
-kb.row(b1, b2)
-
-# Дни
-b3 = KeyboardButton('Понедельник')
-b4 = KeyboardButton('Вторник')
-b5 = KeyboardButton('Среда')
-b6 = KeyboardButton('Четверг')
-b7 = KeyboardButton('Пятница')
-b8 = KeyboardButton('Суббота')
-
-# Возврат
-b10 = KeyboardButton('Назад')
-
-kb_day = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_day.insert(b3).insert(b4).insert(b5).insert(b6).insert(b7).insert(b8).add(b10)
-
-# Загрузка
-b11 = KeyboardButton('Загрузить')
-b13 = KeyboardButton('Посмотреть')
-b15 = KeyboardButton('Удалить')
-
-kb.hw = ReplyKeyboardMarkup(resize_keyboard=True)
-kb.hw.row(b11, b10, b13).add(b15)
-
-# Отмена
-b12 = KeyboardButton('Отмена')
-kb_canc = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_canc.add(b12)
-
-#             Start
-
-
-
+#Start
 @dp.message_handler(commands='start')
 async def start(message: types.Message):
     try:
@@ -77,7 +44,8 @@ async def start(message: types.Message):
         await message.answer("error, try again")
         print("ошибка в блоке start")
 
-#       Блок расисания
+
+#Блок расисания
 @dp.message_handler(lambda message: 'Расписание' in message.text)
 async def rasp(message: types.Message):
     try:
@@ -200,7 +168,7 @@ async def hw(message: types.Message):
         print('ошибка в блоке дз')
 
 
-#       Сохранение
+#Сохранение
 def sql_start():
     try:
         global base, cur
@@ -231,9 +199,7 @@ async def sql_read(message):
         pass
 
 
-# Удаление
-
-
+#Удаление
 async def sql_read2():
     try:
         return cur.execute('SELECT * FROM how').fetchall()
@@ -247,8 +213,7 @@ async def del_sql(data):
         pass
 
 
-# Загрузка
-
+#Загрузка
 @dp.message_handler(lambda message: 'Загрузить' in message.text, state=None)
 async def cm_start(message: types.Message):
     try:
@@ -261,8 +226,7 @@ async def cm_start(message: types.Message):
         pass
 
 
-# Просмотр
-
+#Просмотр
 @dp.message_handler(lambda message: 'Посмотреть' in message.text)
 async def dz(message: types.Message):
     try:
@@ -271,7 +235,7 @@ async def dz(message: types.Message):
         pass
 
 
-# Отмена
+#Отмена
 @dp.message_handler(lambda message: 'Отмена' in message.text, state='*')
 @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
 async def cancel(message: types.Message, state: FSMContext):
@@ -330,7 +294,7 @@ async def load_photo(message: types.Message, state: FSMContext):
         pass
 
 
-# Блок возрата на начальную страницу
+#Блок возрата на начальную страницу
 @dp.message_handler(lambda message: "Назад" in message.text)
 async  def menu(message: types.Message):
     try:
