@@ -1,3 +1,5 @@
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove
+
 #Создание кнопопок и клавиатуры
 #Начало
 b1 = KeyboardButton('Расписание')
