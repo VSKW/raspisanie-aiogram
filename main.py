@@ -3,18 +3,14 @@ import types
 # import библиотеки телеграма
 from aiogram import types
 from aiogram.utils import executor
-from aiogram.dispatcher.filters.state import State, StatesGroup
 # import по файлам
 from keyboards import kb
 from create_bot import dp
+from handlers import raspisanie, HW
 
 
-#Машина состояний
-class FSMAdmin(StatesGroup):
-    sub = State()
-    day = State()
-    text = State()
-    photo = State()
+raspisanie.register_handlers_raspisenie(dp)
+HW.register_handlers_hw(dp)
 
 
 #Start

@@ -1,9 +1,12 @@
 import types
-from keyboards import kb, kb_day
+from aiogram import types
+from aiogram import Dispatcher
+
+from keyboards import kb, kb_day, kb_hw
 from create_bot import dp
 
 #Блок расисания
-@dp.message_handler(lambda message: 'Расписание' in message.text)
+#@dp.message_handler(lambda message: 'Расписание' in message.text)
 async def rasp(message: types.Message):
     try:
         await message.reply('На какой день?', reply_markup=kb_day)
@@ -12,7 +15,7 @@ async def rasp(message: types.Message):
         print("Ошбика в блоке Расписание")
 
 
-@dp.message_handler(lambda message: 'Понедельник' in message.text)
+#@dp.message_handler(lambda message: 'Понедельник' in message.text)
 async def mon(message: types.Message):
     try:
         await message.reply(f"14:15-15:00 Индивид проект Амарантова 106\n"
@@ -26,7 +29,7 @@ async def mon(message: types.Message):
         print("ошибка в блоке Понедельник")
 
 
-@dp.message_handler(lambda message: 'Вторник' in message.text)
+#@dp.message_handler(lambda message: 'Вторник' in message.text)
 async def tue(message: types.Message):
     try:
         await message.reply(f'9:00-9:45 1 подгруппа Информатика Колозян 312\n'
@@ -46,7 +49,7 @@ async def tue(message: types.Message):
         print("ошибка в блоке Вторник")
 
 
-@dp.message_handler(lambda message: 'Среда' in message.text)
+#@dp.message_handler(lambda message: 'Среда' in message.text)
 async def wen(message: types.Message):
     try:
         await message.reply(f'9:55-10:40 2 подгруппа Информатика Колозян 309\n'
@@ -64,7 +67,7 @@ async def wen(message: types.Message):
         print("ошибка в блоке Среда")
 
 
-@dp.message_handler(lambda message: 'Четверг' in message.text)
+#@dp.message_handler(lambda message: 'Четверг' in message.text)
 async def th(message: types.Message):
     try:
         await message.reply(f"9:00-9:45 Информатика Колозян 312\n"
@@ -84,7 +87,7 @@ async def th(message: types.Message):
         print("ошибка в блоке Четверг")
 
 
-@dp.message_handler(lambda message: 'Пятница' in message.text)
+#@dp.message_handler(lambda message: 'Пятница' in message.text)
 async def fri(message: types.Message):
     try:
         await message.reply(f'10:50 - 11:35 1 погруппа Ин яз Бородина 314\n'
@@ -101,7 +104,7 @@ async def fri(message: types.Message):
         print("ошибка в блоке Пятница")
 
 
-@dp.message_handler(lambda message: 'Суббота' in message.text)
+#@dp.message_handler(lambda message: 'Суббота' in message.text)
 async def sat(message: types.Message):
     try:
         await message.reply(f'12:40-13:25 Литература/Русский Ермолова 308\n'
@@ -116,10 +119,35 @@ async def sat(message: types.Message):
         print("ошибка в блоке Суббота")
 
 
-@dp.message_handler(lambda message: 'Домашка' in message.text)
+#@dp.message_handler(lambda message: 'Домашка' in message.text)
 async def hw(message: types.Message):
     try:
-        await message.reply('Хочешь загрузить или посмотреть дз?', reply_markup=kb.hw)
+        await message.reply('Хочешь загрузить или посмотреть дз?', reply_markup=kb_hw)
     except:
         await message.reply('error, try again')
         print('ошибка в блоке дз')
+
+# Блок возрата на начальную страницу
+
+
+#@dp.message_handler(lambda message: "Назад" in message.text)
+async def menu(message: types.Message):
+    try:
+        await message.reply('Основные возможности на данный момент:', reply_markup=kb)
+    except:
+        await message.reply('error, try again')
+        print('ошибка в блоке меню')
+
+def register_handlers_raspisenie(dp: Dispatcher):
+    dp.register_message_handler(rasp, lambda message: 'Расписание' in message.text)
+    dp.register_message_handler(mon, lambda message: 'Понедельник' in message.text)
+    dp.register_message_handler(tue, lambda message: 'Вторник' in message.text)
+    dp.register_message_handler(wen, lambda message: 'Среда' in message.text)
+    dp.register_message_handler(th, lambda message: 'Четверг' in message.text)
+    dp.register_message_handler(fri, lambda message: 'Пятница' in message.text)
+    dp.register_message_handler(sat, lambda message: 'Суббота' in message.text)
+    dp.register_message_handler(hw, lambda message: 'Домашка' in message.text)
+    dp.register_message_handler(menu, lambda message: "Назад" in message.text)
+
+
+
